@@ -66,6 +66,8 @@ export interface InviteDTO {
   email: string;
   role: BoardRole;
   status: InviteStatus;
+  /** Acceptance token. Only ever returned to board owners. */
+  token: string;
   createdAt: string;
   expiresAt: string;
 }

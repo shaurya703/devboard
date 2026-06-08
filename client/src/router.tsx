@@ -4,6 +4,7 @@ import { ProtectedRoute, PublicOnlyRoute } from "@/features/auth/ProtectedRoute"
 import { LoginPage, RegisterPage } from "@/features/auth/AuthPages";
 import { BoardListPage } from "@/features/boards/BoardListPage";
 import { BoardPage } from "@/features/boards/BoardPage";
+import { InviteAcceptPage } from "@/features/boards/InviteAcceptPage";
 
 export const router = createBrowserRouter([
   {
@@ -21,6 +22,7 @@ export const router = createBrowserRouter([
         children: [
           { path: "/boards", element: <BoardListPage /> },
           { path: "/boards/:boardId", element: <BoardPage /> },
+          { path: "/invite/:token", element: <InviteAcceptPage /> },
         ],
       },
     ],

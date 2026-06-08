@@ -87,6 +87,8 @@ export const boardsApi = {
       | { type: "member"; members: BoardMemberDTO[] }
       | { type: "invite"; invite: InviteDTO }
     >(api.post(`/boards/${boardId}/invites`, input)),
+  acceptInvite: (token: string) =>
+    unwrap<{ boardId: string }>(api.post(`/invites/${token}/accept`)),
   revokeInvite: (boardId: string, inviteId: string) =>
     unwrap<{ id: string }>(
       api.delete(`/boards/${boardId}/invites/${inviteId}`)

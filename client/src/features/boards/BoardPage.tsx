@@ -13,12 +13,16 @@ import {
 import { BoardRole, CardDTO, ROLE_RANK } from "@devboard/shared";
 import { useBoard } from "./useBoards";
 import { useCreateColumn, useMoveCard } from "./useBoardMutations";
+import { useBoardRealtime } from "./useBoardRealtime";
 import { computeMove } from "./dnd";
 import { BoardColumn } from "./components/BoardColumn";
 import { CardContent } from "./components/CardItem";
 import { CardEditorModal } from "./CardEditorModal";
+import { ActivityPanel } from "./components/ActivityPanel";
+import { SharePanel } from "./components/SharePanel";
 import { LoadingState, ErrorState } from "@/components/States";
 import { Button } from "@/components/ui/Button";
+import { Drawer } from "@/components/ui/Drawer";
 import { queryClient, queryKeys } from "@/lib/queryClient";
 
 export function BoardPage() {
@@ -31,6 +35,10 @@ export function BoardPage() {
   const [openCard, setOpenCard] = useState<CardDTO | null>(null);
   const [addingColumn, setAddingColumn] = useState(false);
   const [columnTitle, setColumnTitle] = useState("");
+  const [panel, setPanel] = useState<"share" | "activity" | null>(null);
+
+  // Subscribe to the board's realtime room and reconcile incoming events.
+  useBoardRealtime(boardId);
 
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 5 } })
@@ -105,7 +113,7 @@ export function BoardPage() {
 
   return (
     <div className="flex h-full flex-col">
-      <BoardHeader board={board} canEdit={canEdit} />
+      <BoardHeader board={board} canEdit={canEdit} onOpenPanel={setPanel} />
 
       <DndContext
         sensors={sensors}
@@ -181,6 +189,21 @@ export function BoardPage() {
           onClose={() => setOpenCard(null)}
         />
       )}
+
+      <Drawer
+        open={panel === "share"}
+        onClose={() => setPanel(null)}
+        title="Share board"
+      >
+        <SharePanel board={board} open={panel === "share"} />
+      </Drawer>
+      <Drawer
+        open={panel === "activity"}
+        onClose={() => setPanel(null)}
+        title="Activity"
+      >
+        <ActivityPanel boardId={boardId} open={panel === "activity"} />
+      </Drawer>
     </div>
   );
 }
@@ -188,9 +211,11 @@ export function BoardPage() {
 function BoardHeader({
   board,
   canEdit,
+  onOpenPanel,
 }: {
   board: import("@devboard/shared").BoardDetailDTO;
   canEdit: boolean;
+  onOpenPanel: (p: "share" | "activity") => void;
 }) {
   return (
     <div className="flex items-center gap-3 border-b border-slate-200 bg-white px-4 py-3">
@@ -204,16 +229,24 @@ function BoardHeader({
       {!canEdit && (
         <span className="text-xs text-amber-600">View-only access</span>
       )}
-      <div className="ml-auto flex -space-x-2">
-        {board.members.slice(0, 5).map((m) => (
-          <span
-            key={m.userId}
-            title={m.user.name}
-            className="flex h-7 w-7 items-center justify-center rounded-full border-2 border-white bg-indigo-100 text-xs font-medium text-indigo-700"
-          >
-            {m.user.name.charAt(0).toUpperCase()}
-          </span>
-        ))}
+      <div className="ml-auto flex items-center gap-3">
+        <div className="flex -space-x-2">
+          {board.members.slice(0, 5).map((m) => (
+            <span
+              key={m.userId}
+              title={`${m.user.name} (${m.role.toLowerCase()})`}
+              className="flex h-7 w-7 items-center justify-center rounded-full border-2 border-white bg-indigo-100 text-xs font-medium text-indigo-700"
+            >
+              {m.user.name.charAt(0).toUpperCase()}
+            </span>
+          ))}
+        </div>
+        <Button size="sm" variant="secondary" onClick={() => onOpenPanel("activity")}>
+          Activity
+        </Button>
+        <Button size="sm" onClick={() => onOpenPanel("share")}>
+          Share
+        </Button>
       </div>
     </div>
   );

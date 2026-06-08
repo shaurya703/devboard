@@ -131,6 +131,7 @@ export const serializeInvite = (i: {
   email: string;
   role: string;
   status: string;
+  token: string;
   createdAt: Date;
   expiresAt: Date;
 }): InviteDTO => ({
@@ -139,6 +140,7 @@ export const serializeInvite = (i: {
   email: i.email,
   role: i.role as BoardRole,
   status: i.status as InviteDTO["status"],
+  token: i.token,
   createdAt: i.createdAt.toISOString(),
   expiresAt: i.expiresAt.toISOString(),
 });
