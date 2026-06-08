@@ -2,12 +2,14 @@ import http from "http";
 import { createApp } from "./app";
 import { env } from "./config/env";
 import { prisma } from "./lib/prisma";
+import { attachSocket } from "./realtime/socket";
 
 async function bootstrap() {
   const app = createApp();
   const server = http.createServer(app);
 
-  // Socket.IO is attached here in Step 5.
+  // Attach realtime: JWT-authed Socket.IO with per-board rooms.
+  attachSocket(server);
 
   server.listen(env.SERVER_PORT, () => {
     console.log(`🚀 DevBoard API listening on :${env.SERVER_PORT}`);
