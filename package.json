@@ -1,0 +1,30 @@
+{
+  "name": "devboard",
+  "version": "0.1.0",
+  "private": true,
+  "description": "DevBoard — a Kanban-style task/project management tool with real-time collaboration",
+  "license": "MIT",
+  "workspaces": [
+    "shared",
+    "server",
+    "client"
+  ],
+  "scripts": {
+    "build:shared": "npm run build --workspace @devboard/shared",
+    "dev:server": "npm run dev --workspace @devboard/server",
+    "dev:client": "npm run dev --workspace @devboard/client",
+    "dev": "npm run build:shared && concurrently -n server,client -c blue,magenta \"npm run dev:server\" \"npm run dev:client\"",
+    "build": "npm run build:shared && npm run build --workspace @devboard/server && npm run build --workspace @devboard/client",
+    "test": "npm run test --workspace @devboard/server",
+    "lint": "npm run lint --workspaces --if-present",
+    "db:migrate": "npm run db:migrate --workspace @devboard/server",
+    "db:seed": "npm run db:seed --workspace @devboard/server",
+    "prisma:generate": "npm run prisma:generate --workspace @devboard/server"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.0"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
