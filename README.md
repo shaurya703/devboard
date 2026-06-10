@@ -244,13 +244,17 @@ Coverage focuses on the logic worth protecting:
 
 ## Screenshots
 
-> _Placeholders — drop real screenshots/GIFs into `docs/` and update these._
+**Real-time sync** — one user drags a card and it moves instantly for everyone else on the board (Alice, left; Bob, right — no refresh):
 
-| Boards dashboard | Board view (drag & drop) | Card editor | Sharing & roles |
-| ---------------- | ------------------------ | ----------- | --------------- |
-| _`docs/boards.png`_ | _`docs/board.png`_ | _`docs/card.png`_ | _`docs/share.png`_ |
+![Real-time collaboration across two browsers](docs/realtime.gif)
 
-A real-time demo GIF (two browsers side by side) lives at _`docs/realtime.gif`_.
+| Board view — drag & drop across columns | Card editor — labels, due date, assignee |
+| --- | --- |
+| ![Board view](docs/board.png) | ![Card editor](docs/card.png) |
+
+| Sharing & role-based access | Boards dashboard |
+| --- | --- |
+| ![Sharing and roles](docs/share.png) | ![Boards dashboard](docs/boards.png) |
 
 ---
 
