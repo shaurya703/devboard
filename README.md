@@ -1,5 +1,7 @@
 # DevBoard
 
+[![CI](https://github.com/shaurya703/devboard/actions/workflows/ci.yml/badge.svg)](https://github.com/shaurya703/devboard/actions/workflows/ci.yml)
+
 A Kanban-style task & project management tool (think a lightweight Trello/Linear) with **real-time collaboration**. Create boards, drag cards across columns, assign work, label it, share boards by email with role-based access, and watch changes sync live across every connected client.
 
 Built as a portfolio project to demonstrate clean full-stack architecture, production patterns (JWT refresh rotation, optimistic UI, typed end-to-end contracts), and a one-command local setup.
