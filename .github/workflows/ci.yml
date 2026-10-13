@@ -1,0 +1,33 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Generate Prisma client
+        run: npm run prisma:generate
+
+      # Builds shared, server and client in order; `tsc` in each workspace is
+      # the typecheck, and the client build also exercises Vite.
+      - name: Build all workspaces
+        run: npm run build
+
+      # Server tests mock the Prisma client (jest-mock-extended), so no
+      # database service is required.
+      - name: Run server tests
+        run: npm test
